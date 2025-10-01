@@ -13,12 +13,12 @@ model Post {
   title       String
   slug        String    @unique
   content     String
-  description String?
   author      String
   image       String?
   view        Int       @default(0)
   categoryId  String?
   userEmail   String?
+  description String?
   comments    Comment[]
   category    Category? @relation(fields: [categoryId], references: [id])
   user        User?     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
