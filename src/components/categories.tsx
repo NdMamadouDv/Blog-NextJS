@@ -27,7 +27,7 @@ function Categories() {
 
 	return (
 		<div className="mx-auto w-full max-w-4xl">
-			<nav className="flex w-full items-center gap-3 overflow-x-auto pb-2 sm:justify-center">
+			<nav className="sm:flex w-full items-center gap-3 overflow-x-auto pb-2 justify-center grid grid-cols-2">
 				{data.map((category: CategoryLite) => (
 					<Link
 						key={category.id}
