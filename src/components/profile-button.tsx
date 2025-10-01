@@ -38,7 +38,7 @@ function ProfileButton() {
 				</DropdownMenuTrigger>
 				<DropdownMenuContent>
 					<DropdownMenuItem className="cursor-pointer" asChild>
-						<Link href="/profile">Mon profil</Link>
+						<Link href="/dashboard">Tableau de bord</Link>
 					</DropdownMenuItem>
 				</DropdownMenuContent>
 			</DropdownMenu>

@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import PageContainer from "@/components/page-container";
+import { Button } from "@/components/ui/button";
+import PageTitle from "@/components/page-title";
 
 export default function RegisterPage() {
 	const [loading, setLoading] = useState(false);
@@ -24,18 +27,37 @@ export default function RegisterPage() {
 	}
 
 	return (
-		<form onSubmit={onSubmit} className="space-y-3 max-w-sm">
-			<input name="name" placeholder="Nom" className="input" />
-			<input name="email" type="email" placeholder="Email" className="input" />
-			<input
-				name="password"
-				type="password"
-				placeholder="Mot de passe"
-				className="input"
-			/>
-			<button disabled={loading} className="btn">
-				{loading ? "..." : "Créer mon compte"}
-			</button>
-		</form>
+		<PageContainer>
+			<form
+				onSubmit={onSubmit}
+				className="space-y-3 max-w-sm mx-auto border p-8 rounded-2xl mt-10 grid grid-cols-2 gap-4">
+				<div className="col-span-2">
+					<PageTitle title="S'inscrire" />
+					<p>Votre nom, votre email et un mot de passe</p>
+				</div>
+
+				<label htmlFor="">Votre nom</label>
+				<input name="name" placeholder="Nom" className="input" />
+				<label htmlFor=""> Votre email</label>
+				<input
+					name="email"
+					type="email"
+					placeholder="Email"
+					className="input"
+				/>
+				<label htmlFor=""> Votre mot de passe</label>
+				<input
+					name="password"
+					type="password"
+					placeholder="Mot de passe"
+					className="input"
+				/>
+				<Button
+					disabled={loading}
+					className="bg-gray-200 col-span-2 text-black mt-1">
+					{loading ? "Connexion..." : "Se connecter"}
+				</Button>
+			</form>
+		</PageContainer>
 	);
 }

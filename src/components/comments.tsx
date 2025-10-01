@@ -1,23 +1,16 @@
 ﻿"use client";
-import React, { SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useMemo, useState } from "react";
 import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { AlertCircleIcon, Trash2 } from "lucide-react";
 import Link from "next/link";
-import {
-	useMutation,
-	useQuery,
-	useQueryClient,
-} from "@tanstack/react-query";
+import { usePathname, useSearchParams } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import type { PostWithAuthor } from "@/hooks/usePost";
-import {
-	Avatar,
-	AvatarFallback,
-	AvatarImage,
-} from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCurrentUser } from "@/hooks/useUser";
 
 type CreateComment = {
@@ -53,6 +46,13 @@ const deleteComment = async (commentId: string) => {
 };
 
 export default function Comments({ postSlug }: { postSlug: string }) {
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
+	const callbackUrl = useMemo(() => {
+		const query = searchParams.toString();
+		const base = query ? `${pathname}?${query}` : pathname;
+		return `${base}#comments`;
+	}, [pathname, searchParams]);
 	const [content, setContent] = useState("");
 	const { status, isAdmin } = useCurrentUser();
 	const queryClient = useQueryClient();
@@ -98,9 +98,9 @@ export default function Comments({ postSlug }: { postSlug: string }) {
 				(previous) =>
 					previous
 						? {
-							...previous,
-							commentsCount: Math.max(0, previous.commentsCount - 1),
-						}
+								...previous,
+								commentsCount: Math.max(0, previous.commentsCount - 1),
+						  }
 						: previous
 			);
 		},
@@ -137,11 +137,11 @@ export default function Comments({ postSlug }: { postSlug: string }) {
 							</AlertTitle>
 							<AlertDescription>
 								<p className="underline">Solution :</p>
-								<ul className="list-inside list-disc text-sm">
+								<ul className="list-inside list-decimal text-sm">
 									<li>
 										Creer un compte ou bien se connecter via Google/GitHub ici:{" "}
 										<Link
-											href="/login?callbackUrl=<URL courante + #comments>"
+											href={`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`}
 											className="text-blue-500 underline">
 											Se connecter
 										</Link>{" "}
@@ -158,7 +158,11 @@ export default function Comments({ postSlug }: { postSlug: string }) {
 						disabled={status !== "authenticated"}
 					/>
 					<Button
-						disabled={content === "" || createMutation.isPending || status !== "authenticated"}
+						disabled={
+							content === "" ||
+							createMutation.isPending ||
+							status !== "authenticated"
+						}
 						className="mt-4"
 						onClick={onSubmit}>
 						{createMutation.isPending ? "Envoi en cours.." : "Commenter"}
@@ -196,14 +200,11 @@ export default function Comments({ postSlug }: { postSlug: string }) {
 									{comment.user?.name ?? "Utilisateur"}
 								</p>
 								<span className="text-xs text-slate-500">
-									{new Date(comment.createdAt).toLocaleDateString(
-										"fr-FR",
-										{
-											day: "2-digit",
-											month: "2-digit",
-											year: "numeric",
-										}
-									)}
+									{new Date(comment.createdAt).toLocaleDateString("fr-FR", {
+										day: "2-digit",
+										month: "2-digit",
+										year: "numeric",
+									})}
 								</span>
 							</div>
 							<p className="text-sm text-slate-600 dark:text-slate-300">
@@ -226,3 +227,4 @@ export default function Comments({ postSlug }: { postSlug: string }) {
 		</div>
 	);
 }
+

@@ -15,12 +15,19 @@ import {
 import { CategoryLite } from "../../types";
 import { useCategories } from "@/hooks/useCategories";
 import { useCurrentUser } from "@/hooks/useUser";
+import { Skeleton } from "./ui/skeleton";
 
 export function HeaderNavigation() {
 	const { data, isLoading, error } = useCategories();
 	const { isAuthenticated } = useCurrentUser();
 
-	if (isLoading) return <p>Chargement...</p>;
+	if (isLoading)
+		return (
+			<div className="flex items-center justify-center gap-4">
+				<Skeleton className="h-[20px] w-[125px] rounded-xl" />
+				<Skeleton className="h-[20px] w-[125px] rounded-xl" />
+			</div>
+		);
 	if (error) return <p>Erreur : {String((error as Error).message ?? error)}</p>;
 	if (!data?.length) return <p>Aucune categorie pour le moment.</p>;
 	return (
@@ -45,7 +52,9 @@ export function HeaderNavigation() {
 				{isAuthenticated && (
 					<NavigationMenuItem>
 						{/* Affiche le lien d'ecriture uniquement aux utilisateurs connectes. */}
-						<NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+						<NavigationMenuLink
+							asChild
+							className={navigationMenuTriggerStyle()}>
 							<Link href="/write">Ecrire un post</Link>
 						</NavigationMenuLink>
 					</NavigationMenuItem>

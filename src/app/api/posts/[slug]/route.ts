@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import type { Prisma } from "@prisma/client";
 import prisma from "@/lib/connect";
 import { getAuthSession } from "@/lib/auth-option";
@@ -43,7 +43,7 @@ export const GET = async (_req: Request, { params }: Props) => {
 			select: postSelect,
 		});
 		return NextResponse.json(serialize(post), { status: 200 });
-	} catch (err) {
+	} catch {
 		return NextResponse.json({ error: "Not found" }, { status: 404 });
 	}
 };
@@ -112,5 +112,41 @@ export const PATCH = async (req: Request, { params }: Props) => {
 		return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
 	}
 };
+
+export const DELETE = async (_req: Request, { params }: Props) => {
+	try {
+		const session = await getAuthSession();
+		const email = session?.user?.email;
+
+		if (!session || !email) {
+			return NextResponse.json({ error: "Not authenticated" }, { status: 403 });
+		}
+
+		const { slug } = await params;
+		const existing = await prisma.post.findUnique({
+			where: { slug },
+			select: { userEmail: true },
+		});
+
+		if (!existing) {
+			return NextResponse.json({ error: "Post introuvable" }, { status: 404 });
+		}
+
+		const isOwner = existing.userEmail === email;
+		const isAdmin = session.user?.role === "ADMIN";
+
+		if (!isOwner && !isAdmin) {
+			return NextResponse.json({ error: "Suppression non autorisee" }, { status: 403 });
+		}
+
+		await prisma.post.delete({ where: { slug } });
+		return NextResponse.json({ success: true }, { status: 200 });
+	} catch (err) {
+		console.error("DELETE /api/posts/[slug] error:", err);
+		return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
+	}
+};
+
+
 
 
