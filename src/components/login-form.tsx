@@ -11,7 +11,9 @@ type LoginFormProps = {
 	callbackUrl?: string;
 };
 
-export default function LoginForm({ callbackUrl = "/dashboard" }: LoginFormProps) {
+export default function LoginForm({
+	callbackUrl = "/dashboard",
+}: LoginFormProps) {
 	const { status } = useSession();
 	const [loading, setLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
