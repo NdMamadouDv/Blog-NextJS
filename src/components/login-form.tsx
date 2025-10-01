@@ -91,11 +91,11 @@ export default function LoginForm({
 					</Button>
 				</form>
 				<div className="flex flex-col sm:flex-row justify-center items-center gap-3 w-full">
-					<Button onClick={() => handleOauth("github")} className="w-full">
+					<Button onClick={() => handleOauth("github")}>
 						<Github />
 						Se connecter avec GitHub
 					</Button>
-					<Button onClick={() => handleOauth("google")} className="w-full">
+					<Button onClick={() => handleOauth("google")}>
 						<Mail />
 						Se connecter avec Google
 					</Button>
