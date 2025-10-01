@@ -4,7 +4,7 @@ import prisma from "@/lib/connect";
 import { getAuthSession } from "@/lib/auth-option";
 import { redirect } from "next/navigation";
 
-import DashboardContent from "./dashboard-content";
+import DashboardContent from "@/components/dashboard-content";
 
 export type DashboardPost = {
 	id: string;
@@ -66,14 +66,14 @@ export default async function DashboardPage() {
 
 	const usersPromise = isAdmin
 		? prisma.user.findMany({
-			orderBy: { createdAt: "desc" },
-			select: {
-				id: true,
-				email: true,
-				name: true,
-				role: true,
-			},
-		})
+				orderBy: { createdAt: "desc" },
+				select: {
+					id: true,
+					email: true,
+					name: true,
+					role: true,
+				},
+		  })
 		: Promise.resolve([] as DashboardUser[]);
 
 	const [posts, comments, users] = await Promise.all([
@@ -101,12 +101,19 @@ export default async function DashboardPage() {
 		}));
 
 	const serializedUsers: DashboardUser[] = isAdmin
-		? (users as { id: string; email: string | null; name: string | null; role: "USER" | "ADMIN" }[]).map((user) => ({
-			id: user.id,
-			email: user.email,
-			name: user.name,
-			role: user.role,
-		}))
+		? (
+				users as {
+					id: string;
+					email: string | null;
+					name: string | null;
+					role: "USER" | "ADMIN";
+				}[]
+		  ).map((user) => ({
+				id: user.id,
+				email: user.email,
+				name: user.name,
+				role: user.role,
+		  }))
 		: [];
 
 	return (
