@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 	description:
 		"Blog gérant l'authentification ,les roles et l'ajour suppression de commentaire",
 	icons: {
-		icon: "/img/favicon.png",
+		icon: "/img/favicon.ico",
 	},
 };
 

@@ -31,36 +31,38 @@ export function HeaderNavigation() {
 	if (error) return <p>Erreur : {String((error as Error).message ?? error)}</p>;
 	if (!data?.length) return <p>Aucune categorie pour le moment.</p>;
 	return (
-		<NavigationMenu viewport={false}>
-			<NavigationMenuList>
-				<NavigationMenuItem>
-					<NavigationMenuTrigger>Categories</NavigationMenuTrigger>
-
-					<NavigationMenuContent className="z-2">
-						<ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-							{data.map((category: CategoryLite) => (
-								<ListItem
-									key={category.id}
-									href={`/categories/${category.slug}`}>
-									{category.name}
-								</ListItem>
-							))}
-						</ul>
-					</NavigationMenuContent>
-				</NavigationMenuItem>
-
-				{isAuthenticated && (
+		<div className="hidden md:block">
+			<NavigationMenu viewport={false}>
+				<NavigationMenuList>
 					<NavigationMenuItem>
-						{/* Affiche le lien d'ecriture uniquement aux utilisateurs connectes. */}
-						<NavigationMenuLink
-							asChild
-							className={navigationMenuTriggerStyle()}>
-							<Link href="/write">Ecrire un post</Link>
-						</NavigationMenuLink>
+						<NavigationMenuTrigger>Categories</NavigationMenuTrigger>
+
+						<NavigationMenuContent className="z-2">
+							<ul className="grid w-[400px] gap-2 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+								{data.map((category: CategoryLite) => (
+									<ListItem
+										key={category.id}
+										href={`/categories/${category.slug}`}>
+										{category.name}
+									</ListItem>
+								))}
+							</ul>
+						</NavigationMenuContent>
 					</NavigationMenuItem>
-				)}
-			</NavigationMenuList>
-		</NavigationMenu>
+
+					{isAuthenticated && (
+						<NavigationMenuItem>
+							{/* Affiche le lien d'ecriture uniquement aux utilisateurs connectes. */}
+							<NavigationMenuLink
+								asChild
+								className={navigationMenuTriggerStyle()}>
+								<Link href="/write">Ecrire un post</Link>
+							</NavigationMenuLink>
+						</NavigationMenuItem>
+					)}
+				</NavigationMenuList>
+			</NavigationMenu>
+		</div>
 	);
 }
 

@@ -12,7 +12,7 @@ import Image from "next/image";
 
 export default function StackCard() {
 	return (
-		<div className="mt-3 flex gap-4">
+		<div className="mt-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 ">
 			<Card className="w-[280px]">
 				<CardHeader>
 					<CardTitle>Stack technique</CardTitle>

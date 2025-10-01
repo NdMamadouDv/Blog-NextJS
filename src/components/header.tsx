@@ -5,6 +5,7 @@ import ProfileButton from "./profile-button";
 import ResponsiveMenu from "./responsive-menu";
 import ToggleTheme from "./toggle-theme";
 import Link from "next/link";
+import Image from "next/image";
 export default function Page() {
 	return (
 		<header className=" border-b">
@@ -13,9 +14,13 @@ export default function Page() {
 					<div className="flex items-center gap-2">
 						<ResponsiveMenu />
 						<Link href="/">
-							<h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-red-600 to-blue-600 ">
-								Next Blog
-							</h1>
+							<Image
+								src="/img/logo.png"
+								alt="logo"
+								width={200}
+								height={200}
+								className="h-12 w-12"
+							/>
 						</Link>
 					</div>
 
