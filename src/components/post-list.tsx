@@ -6,10 +6,10 @@ import { usePosts } from "@/hooks/usePosts";
 type Props = { categorySlug?: string };
 
 function PostList({ categorySlug }: Props) {
-	const { data, isLoading, error } = usePosts(categorySlug);
+	const { data, isLoading, error } = usePosts({ categorySlug });
 
-	if (isLoading) return <p>Chargement…</p>;
-	if (error) return <p>Erreur:{String((error as Error).message ?? error)}</p>;
+	if (isLoading) return <p>Chargement...</p>;
+	if (error) return <p>Erreur: {error.message}</p>;
 	if (!data?.length) return <p>Aucun post pour le moment.</p>;
 
 	return (

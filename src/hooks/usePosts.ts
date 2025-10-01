@@ -15,7 +15,7 @@ const fetchPosts = async (params: Params): Promise<PostCardData[]> => {
 
 export function usePosts(params: Params = {}) {
 	const { categorySlug, page = 1, limit = 12 } = params;
-	return useQuery<PostCardData[]>({
+	return useQuery<PostCardData[], Error>({
 		queryKey: ["posts", categorySlug ?? "all"],
 		queryFn: () => fetchPosts({ categorySlug, page, limit }),
 		staleTime: 30_000,
