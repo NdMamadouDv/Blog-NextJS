@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			description,
 			siteName: siteConfig.name,
 			publishedTime: post.createdAt.toISOString(),
-			modifiedTime: post.updatedAt.toISOString(),
+
 			images: [
 				{
 					url: imageUrl,
@@ -113,7 +113,6 @@ export default async function SinglePostPage({ params }: Props) {
 			name: siteConfig.creator,
 		},
 		datePublished: post.createdAt.toISOString(),
-		dateModified: post.updatedAt.toISOString(),
 		mainEntityOfPage: canonicalUrl,
 		url: canonicalUrl,
 	};

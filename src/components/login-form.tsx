@@ -6,6 +6,8 @@ import { Github, Mail } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 
 type LoginFormProps = {
 	callbackUrl?: string;
@@ -86,7 +88,10 @@ export default function LoginForm({
 					{errorMessage && (
 						<p className="text-sm text-red-500">{errorMessage}</p>
 					)}
-					<Button disabled={loading} className="bg-gray-600 w-full">
+					<Button
+						disabled={loading}
+						className="bg-white w-full text-black hover:bg-gray-600 hover:text-white border"
+						variant="default">
 						{loading ? "Connexion..." : "Se connecter"}
 					</Button>
 				</form>
@@ -95,11 +100,26 @@ export default function LoginForm({
 						<Github />
 						Se connecter avec GitHub
 					</Button>
-					<Button onClick={() => handleOauth("google")}>
-						<Mail />
+					<Button
+						onClick={() => handleOauth("google")}
+						className="bg-white text-black border hover:text-white">
+						<Image
+							src="/img/google.png"
+							width={20}
+							height={20}
+							alt="Google"
+							className="object-fit"
+						/>
 						Se connecter avec Google
 					</Button>
 				</div>
+				<p className="text-lg">Créez votre compte en 30 secondes :</p>
+
+				<Button
+					className="bg-white text-black border w-full hover:bg-green-600 hover:text-white"
+					variant="default">
+					<Link href="/register">Créer un compte</Link>
+				</Button>
 			</div>
 		</PageContainer>
 	);

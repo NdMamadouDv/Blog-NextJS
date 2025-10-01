@@ -33,29 +33,34 @@ export default function RegisterPage() {
 				className="space-y-3 max-w-sm mx-auto border p-8 rounded-2xl mt-10 grid grid-cols-2 gap-4">
 				<div className="col-span-2">
 					<PageTitle title="S'inscrire" />
-					<p>Votre nom, votre email et un mot de passe</p>
+					<p>Votre nom, un email et un mot de passe</p>
 				</div>
 
 				<label htmlFor="">Votre nom</label>
-				<input name="name" placeholder="Nom" className="input" />
+				<input
+					name="name"
+					placeholder="Nom"
+					className="input border rounded-md p-1"
+				/>
 				<label htmlFor=""> Votre email</label>
 				<input
 					name="email"
 					type="email"
 					placeholder="Email"
-					className="input"
+					className="input border rounded-md p-1"
 				/>
 				<label htmlFor=""> Votre mot de passe</label>
 				<input
 					name="password"
 					type="password"
 					placeholder="Mot de passe"
-					className="input"
+					className="input border rounded-md p-1"
 				/>
 				<Button
 					disabled={loading}
-					className="bg-gray-200 col-span-2 text-black mt-1">
-					{loading ? "Connexion..." : "Se connecter"}
+					className="bg-white text-black border w-full hover:bg-green-600 hover:text-white mt-1 col-span-2"
+					variant="default">
+					S'inscrire
 				</Button>
 			</form>
 		</PageContainer>
