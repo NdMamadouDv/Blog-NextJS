@@ -5,6 +5,7 @@ import Header from "../components/header";
 import ThemeProvider from "./providers/theme-provider";
 import Footer from "@/components/footer";
 import AppProvider from "./providers/app-provider";
+import { siteConfig } from "@/lib/site-config";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -16,12 +17,56 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
+const ogImageUrl = siteConfig.ogImage.startsWith("http")
+	? siteConfig.ogImage
+	: `${siteConfig.url}${siteConfig.ogImage}`;
+
 export const metadata: Metadata = {
-	title: "Blog - Mamadou Ndiaye",
-	description:
-		"Blog gérant l'authentification ,les roles et l'ajour suppression de commentaire",
+	metadataBase: new URL(siteConfig.url),
+	title: {
+		default: siteConfig.name,
+		template: "%s | Mamadou Ndiaye",
+	},
+	description: siteConfig.description,
+	keywords: siteConfig.keywords,
 	icons: {
 		icon: "/img/favicon.ico",
+	},
+	authors: [{ name: siteConfig.creator }],
+	creator: siteConfig.creator,
+	publisher: siteConfig.creator,
+	alternates: {
+		canonical: siteConfig.url,
+	},
+	openGraph: {
+		type: "website",
+		locale: siteConfig.locale,
+		siteName: siteConfig.name,
+		title: siteConfig.name,
+		description: siteConfig.description,
+		url: siteConfig.url,
+		images: [
+			{
+				url: ogImageUrl,
+				width: 1200,
+				height: 630,
+				alt: siteConfig.name,
+			},
+		],
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: siteConfig.name,
+		description: siteConfig.description,
+		images: [ogImageUrl],
+	},
+	robots: {
+		index: true,
+		follow: true,
+		googleBot: {
+			index: true,
+			follow: true,
+		},
 	},
 };
 
@@ -36,11 +81,9 @@ export default function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
 				<AppProvider>
 					<ThemeProvider>
-						<div className="flex flex-col justify-between min-h-screen">
+						<div className="flex min-h-screen flex-col justify-between">
 							<Header />
-							{/* <Link href="/categories">Categorie</Link> */}
 							<div className="flex-grow">{children}</div>
-
 							<Footer />
 						</div>
 					</ThemeProvider>

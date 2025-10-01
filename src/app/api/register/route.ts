@@ -28,10 +28,10 @@ export async function POST(req: Request) {
 		});
 
 		return NextResponse.json({ ok: true }, { status: 201 });
-	} catch (e) {
-		return NextResponse.json(
-			{ error: "Inscription impossible" },
-			{ status: 400 }
+	} catch (error) {
+		return (
+			NextResponse.json({ error: "Inscription impossible" }, { status: 400 }),
+			error
 		);
 	}
 }
