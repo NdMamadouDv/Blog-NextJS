@@ -18,14 +18,6 @@ export default function LoginPage() {
 						onSubmit={async (e) => {
 							e.preventDefault();
 							setLoading(true);
-							const f = new FormData(e.currentTarget);
-							const res = await signIn("credentials", {
-								email: f.get("email"),
-								password: f.get("password"),
-								redirect: false,
-							});
-							setLoading(false);
-							// gérer res?.error si besoin
 						}}
 						className="space-y-2">
 						<div className="flex flex-col gap-4 ">

@@ -8,14 +8,6 @@ type Params = {
 	limit?: number;
 };
 
-// const fetchPosts = async (categorySlug?: string): Promise<PostCardData[]> => {
-// 	const url = categorySlug
-// 		? `/api/posts?category=${categorySlug}`
-// 		: `/api/posts`;
-// 	const { data } = await axios.get(url);
-// 	return data as PostCardData[];
-// };
-
 const fetchPosts = async (params: Params): Promise<PostCardData[]> => {
 	const { data } = await axios.get("/api/posts", { params });
 	return data.items ?? data;

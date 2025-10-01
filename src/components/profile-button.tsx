@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -10,13 +10,11 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-function ProfileButton() {
-	const { data: session, status } = useSession();
 
-	// console.log("session", session, "status", status);
-	// User is Not connecter -> Button loggin
-	//  user is connecter -> Hide button
-	const onLogout = () => {
+function ProfileButton() {
+	const { data: session } = useSession();
+
+	const handleLogout = () => {
 		signOut();
 	};
 
@@ -29,19 +27,25 @@ function ProfileButton() {
 			</div>
 		);
 	}
+
 	return (
-		<DropdownMenu>
-			<DropdownMenuTrigger>
-				<Avatar>
-					<AvatarImage src={session?.user?.image || "/img/avatar.jpg"} />
-				</Avatar>
-			</DropdownMenuTrigger>
-			<DropdownMenuContent>
-				<DropdownMenuItem onClick={onLogout} className="cursor-pointer">
-					Se déconnecter
-				</DropdownMenuItem>
-			</DropdownMenuContent>
-		</DropdownMenu>
+		<div className="flex items-center gap-3">
+			<DropdownMenu>
+				<DropdownMenuTrigger>
+					<Avatar>
+						<AvatarImage src={session.user?.image || "/img/avatar.jpg"} />
+					</Avatar>
+				</DropdownMenuTrigger>
+				<DropdownMenuContent>
+					<DropdownMenuItem className="cursor-pointer" asChild>
+						<Link href="/profile">Mon profil</Link>
+					</DropdownMenuItem>
+				</DropdownMenuContent>
+			</DropdownMenu>
+			<Button variant="outline" onClick={handleLogout}>
+				Se deconnecter
+			</Button>
+		</div>
 	);
 }
 

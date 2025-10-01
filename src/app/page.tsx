@@ -1,6 +1,4 @@
 import PageContainer from "@/components/page-container";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import PostList from "@/components/post-list";
 import Categories from "@/components/categories";
 

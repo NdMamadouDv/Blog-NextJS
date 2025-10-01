@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
+import type { Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
 import Typography from "@tiptap/extension-typography";
@@ -21,6 +22,23 @@ type Props = {
 	placeholder?: string;
 	className?: string;
 };
+
+const headingOptions = ["paragraph", "h1", "h2", "h3", "h4"] as const;
+type HeadingValue = (typeof headingOptions)[number];
+type HeadingLevel = 1 | 2 | 3 | 4;
+
+const headingLevelMap: Record<Exclude<HeadingValue, "paragraph">, HeadingLevel> = {
+	h1: 1,
+	h2: 2,
+	h3: 3,
+	h4: 4,
+};
+
+const getHeadingLevel = (value: HeadingValue): HeadingLevel | null =>
+	value === "paragraph" ? null : headingLevelMap[value];
+
+const isHeadingValue = (value: string): value is HeadingValue =>
+	headingOptions.includes(value as HeadingValue);
 
 export default function TiptapAvecToolbar({
 	value,
@@ -80,7 +98,7 @@ export default function TiptapAvecToolbar({
 }
 
 /** ---------- Toolbar sans dépendances externes ---------- */
-function Toolbar({ editor }: { editor: any }) {
+function Toolbar({ editor }: { editor: Editor }) {
 	return (
 		<div className="mb-2 flex flex-wrap items-center gap-4">
 			<Btn
@@ -109,21 +127,25 @@ function Toolbar({ editor }: { editor: any }) {
 
 			<HeadingSelect
 				value={
-					(["paragraph", "h1", "h2", "h3", "h4"] as const).find((k) =>
-						k === "paragraph"
-							? editor.isActive("paragraph")
-							: editor.isActive("heading", { level: Number(k.slice(1)) })
-					) ?? "paragraph"
+					headingOptions.find((key) => {
+						if (key === "paragraph") {
+							return editor.isActive("paragraph");
+						}
+
+						const level = getHeadingLevel(key);
+						return level !== null && editor.isActive("heading", { level });
+				}) ?? "paragraph"
 				}
 				onChange={(val) => {
-					editor.chain().focus();
-					if (val === "paragraph") editor.setParagraph().run();
-					else
-						editor
-							.chain()
-							.focus()
-							.toggleHeading({ level: Number(val.slice(1)) })
-							.run();
+					const chain = editor.chain().focus();
+					const level = getHeadingLevel(val);
+
+					if (level === null) {
+						chain.setParagraph().run();
+						return;
+					}
+
+					chain.toggleHeading({ level }).run();
 				}}
 			/>
 
@@ -184,14 +206,22 @@ function HeadingSelect({
 	value,
 	onChange,
 }: {
-	value: "paragraph" | "h1" | "h2" | "h3" | "h4";
-	onChange: (v: "paragraph" | "h1" | "h2" | "h3" | "h4") => void;
+	value: HeadingValue;
+	onChange: (v: HeadingValue) => void;
 }) {
+	const handleChange: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
+		const nextValue = event.target.value;
+
+		if (isHeadingValue(nextValue)) {
+			onChange(nextValue);
+		}
+	};
+
 	return (
 		<select
 			className="h-8 rounded-md border bg-transparent px-2 text-sm"
 			value={value}
-			onChange={(e) => onChange(e.target.value as any)}>
+			onChange={handleChange}>
 			<option value="paragraph">Paragraphe</option>
 			<option value="h1">H1</option>
 			<option value="h2">H2</option>

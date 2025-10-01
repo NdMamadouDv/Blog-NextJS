@@ -3,25 +3,26 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Post {
-  id         String    @id @default(cuid())
-  createdAt  DateTime  @default(now())
-  title      String
-  slug       String    @unique
-  content    String
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+  title       String
+  slug        String    @unique
+  content     String
   description String?
-  author     String
-  image      String?
-  view       Int       @default(0)
-  categoryId String?
-  userEmail  String?
-  comments   Comment[]
-  category   Category? @relation(fields: [categoryId], references: [id])
-  user       User?     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
+  author      String
+  image       String?
+  view        Int       @default(0)
+  categoryId  String?
+  userEmail   String?
+  comments    Comment[]
+  category    Category? @relation(fields: [categoryId], references: [id])
+  user        User?     @relation(fields: [userEmail], references: [email], onDelete: Cascade)
 
   @@index([categoryId])
 }
@@ -97,6 +98,3 @@ enum Role {
   USER
   ADMIN
 }
-
-
-
