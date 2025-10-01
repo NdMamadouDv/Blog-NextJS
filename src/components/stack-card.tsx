@@ -1,9 +1,7 @@
 import React from "react";
 import {
 	Card,
-	CardAction,
 	CardContent,
-	CardDescription,
 	CardFooter,
 	CardHeader,
 	CardTitle,
@@ -48,7 +46,12 @@ export default function StackCard() {
 					</ul>
 				</CardContent>
 				<CardFooter className="gap-1">
-					<Image src="/img/dashboard.png" height={1200} alt="" width={1500} />
+					<Image
+						src="public/img/dashboard.png"
+						height={1200}
+						alt=""
+						width={1500}
+					/>
 				</CardFooter>
 			</Card>
 			<Card className="w-[280px]">
@@ -58,7 +61,7 @@ export default function StackCard() {
 				<CardContent>Vercel et temps de conception : 2 semaines.</CardContent>
 				<CardFooter className="flex flex-col items-center justify-center">
 					{" "}
-					<Image src="/img/vercel.png" height={60} alt="" width={60} />
+					<Image src="public/img/vercel.png" height={60} alt="" width={60} />
 					<p className="italic text-xs">Logo Vercel</p>
 				</CardFooter>
 			</Card>
